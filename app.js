@@ -109,6 +109,12 @@ function cleanValue(value) {
   return s.trim();
 }
 
+function cleanPhoneNumber(value) {
+  if (!value) return '';
+  const digitsOnly = String(value).replace(/\D/g, ''); // strip everything except digits
+  return digitsOnly.length > 10 ? digitsOnly.slice(-10) : digitsOnly;
+}
+
 // ---- Address Line 1/2 rule ----
 function buildAddressLines(rawAddress1, rawAddress2, rawCity) {
   let line1 = cleanValue(rawAddress1);
@@ -252,10 +258,10 @@ function buildManifestRow() {
     dropOffPincode: FIXED_VALUES.dropOffPincode,
     dropoffPickupOfficeId: FIXED_VALUES.dropoffPickupOfficeId,
     senderMobileNo: FIXED_VALUES.senderMobileNo,
-    receiverMobileNo: order.customer_phone || '',
+    receiverMobileNo: cleanPhoneNumber(order.customer_phone),
     prepaymentCode: '', valueOfPrepayment: '',
     codrCod: isCOD ? 'COD' : '',
-    valueForCodrCod: isCOD ? Number(order.amount_to_receive.toFixed(2)) : '',
+    valueForCodrCod: isCOD ? (order.amount_to_receive != null ? Number(order.amount_to_receive.toFixed(2)) : '') : '',
     insuranceType: '', valueOfInsurance: '',
     ack: FIXED_VALUES.ack,
     registration: FIXED_VALUES.registration,
