@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Logistics & Dimension Portal</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  
+    <style>
+    #copiedNotice { display: none; }
+    #copiedNotice.show { display: inline; }
+
+    /* Excel-style gridlines for the Active Manifest table */
+    #manifestTable {
+      border-collapse: collapse;
+    }
+    #manifestTable th,
+    #manifestTable td {
+      border: 1px solid #cbd5e1; /* slate-300 */
+      padding: 4px 12px;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8 font-sans antialiased">
+
+  <div class="max-w-7xl mx-auto space-y-6">
+
+    <!-- Top Header -->
+    <header class="flex flex-col md:flex-row md:items-center md:justify-between pb-4 border-b border-slate-200 gap-4">
+      <div>
+        <h1 class="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
+          <i class="ph ph-package text-indigo-600"></i> Dispatch & Dimensions Portal
+        </h1>
+        <p class="text-sm text-slate-500">Record package metrics, view order details, and export manifest data.</p>
+      </div>
+
+      <!-- Action Controls -->
+      <div class="flex items-center gap-3">
+        <!-- Reset Dropdown -->
+        <div class="relative inline-block text-left">
+          <select
+            id="resetSelect"
+            class="bg-white border border-slate-300 text-slate-700 text-sm font-medium rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-rose-500 focus:outline-none shadow-sm cursor-pointer hover:border-slate-400 transition"
+          >
+            <option value="" disabled selected hidden>Reset</option>
+            <option value="reset" class="text-red-600 font-semibold bg-red-50" style="color: #dc2626; background-color: #fef2f2;">
+              Reset Data (Keep Template)
+            </option>
+          </select>
+        </div>
+
+        <!-- Download Button -->
+        <button
+          id="downloadBtn"
+          type="button"
+          class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-medium text-sm px-4 py-2.5 rounded-lg shadow-sm transition cursor-pointer"
+        >
+          <i class="ph ph-file-csv text-base"></i>
+          <span>Download Excel</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- New Order Entry Card -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+      <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
+        <i class="ph ph-plus-circle text-indigo-500"></i> New Order Entry
+      </h2>
+
+      <form id="orderForm" class="space-y-4" onsubmit="return false;">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+
+          <!-- 1. Order ID -->
+          <div>
+            <label for="orderId" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+              Order ID  <span class="text-rose-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="orderId"
+              placeholder="E.G., 8578"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition uppercase"
+            >
+          </div>
+
+          <!-- 2. Payment Type -->
+          <div>
+            <label for="paymentType" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+              Payment Type
+            </label>
+            <input
+              type="text"
+              id="paymentType"
+             
+              readonly
+              tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed uppercase"
+            >
+          </div>
+
+          <!-- 3. Order Price -->
+          <div>
+            <label for="orderPrice" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+              Order Price
+            </label>
+            <input
+              type="text"
+              id="orderPrice"
+              
+              readonly
+              tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed"
+            >
+          </div>
+
+          <!-- 4. Pincode -->
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label for="pincode" class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
+                Pincode
+              </label>
+              <span id="copiedNotice" class="text-[10px] text-emerald-600 font-bold transition">Copied!</span>
+            </div>
+            <div class="relative">
+              <input
+                type="text"
+                id="pincode"
+                
+                readonly
+                class="w-full pl-3 pr-8 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none"
+              >
+              <button
+                type="button"
+                id="copyPincodeBtn"
+                title="Copy Pincode"
+                class="absolute right-2.5 top-2.5 text-slate-400 hover:text-indigo-600 focus:outline-none cursor-pointer"
+              >
+                <i class="ph ph-copy text-base"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- 5. Barcode No -->
+          <div>
+            <label for="barcode" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+              Barcode No <span class="text-rose-500">*</span>
+            </label>
+            <input
+              type="text"
+              id="barcode"
+              placeholder="Scan or enter barcode"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+            >
+          </div>
+
+          <!-- 6. Physical Weight -->
+          <div>
+            <label for="weight" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+              Physical Weight (g) <span class="text-rose-500">*</span>
+            </label>
+            <input
+              type="number"
+              step="1"
+              min="0"
+              id="weight"
+              placeholder="0"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+            >
+          </div>
+
+          <!-- 7. Length -->
+          <div>
+            <label for="length" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+              Length (cm) <span class="text-rose-500">*</span>
+            </label>
+            <input
+              type="number"
+              step="1"
+              min="0"
+              id="length"
+              placeholder="0"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+            >
+          </div>
+
+          <!-- 8. Breadth / Diameter -->
+          <div>
+            <label for="breadth" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+              Breadth / Diameter (cm) <span class="text-rose-500">*</span>
+            </label>
+            <input
+              type="number"
+              step="1"
+              min="0"
+              id="breadth"
+              placeholder="0"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+            >
+          </div>
+
+          <!-- 9. Height -->
+          <div>
+            <label for="height" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+              Height (cm) <span class="text-rose-500">*</span>
+            </label>
+            <input
+              type="number"
+              step="1"
+              min="0"
+              id="height"
+              placeholder="0"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+            >
+          </div>
+
+        </div>
+
+        <div id="formError" class="text-sm text-rose-600 min-h-[1.25rem]"></div>
+
+        <!-- Submit Button -->
+        <div class="pt-3 flex justify-end">
+          <button
+            type="button"
+            id="submitBtn"
+            class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium text-sm px-6 py-2.5 rounded-lg shadow-sm transition cursor-pointer"
+          >
+            <i class="ph ph-check-circle text-base"></i>
+            <span>Submit Entry</span>
+          </button>
+        </div>
+      </form>
+    </div>
+     
+    <!-- Active Manifest Table Card -->
+    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+        <h3 class="font-semibold text-slate-800 text-sm">Active Manifest Sheet</h3>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table id="manifestTable" class="w-full text-left border-collapse text-xs whitespace-nowrap">
+          <thead>
+            <tr class="bg-slate-50 text-slate-600 font-semibold uppercase tracking-wider border-b border-slate-200">
+              <th class="p-3">SERIAL NUMBER</th>
+              <th class="p-3">BARCODE NO</th>
+              <th class="p-3 text-right">PHYSICAL WEIGHT</th>
+              <th class="p-3">SHAPE OF ARTICLE</th>
+              <th class="p-3 text-right">LENGTH</th>
+              <th class="p-3 text-right">BREADTH/DIAMETER</th>
+              <th class="p-3 text-right">HEIGHT</th>
+              <th class="p-3">PRIORITY FLAG</th>
+              <th class="p-3">DELIVERY INSTRUCTION</th>
+              <th class="p-3">INSTRUCTION RTS</th>
+              <th class="p-3">SENDER NAME</th>
+              <th class="p-3">SENDER COMPANY</th>
+              <th class="p-3">SENDER ADD LINE 1</th>
+              <th class="p-3">SENDER ADD LINE 2</th>
+              <th class="p-3">SENDER CITY</th>
+              <th class="p-3">SENDER STATE</th>
+              <th class="p-3">SENDER PINCODE</th>
+              <th class="p-3">SENDER EMAILID</th>
+              <th class="p-3">SENDER ALT CONTACT</th>
+              <th class="p-3">SENDER KYC</th>
+              <th class="p-3">SENDER TAX REFERENCE</th>
+              <th class="p-3">RECEIVER NAME</th>
+              <th class="p-3">RECEIVER COMPANY</th>
+              <th class="p-3">RECEIVER ADD LINE 1</th>
+              <th class="p-3">RECEIVER ADD LINE 2</th>
+              <th class="p-3">RECEIVER CITY</th>
+              <th class="p-3">RECEIVER STATE</th>
+              <th class="p-3">RECEIVER PINCODE</th>
+              <th class="p-3">RECEIVER EMAILID</th>
+              <th class="p-3">RECEIVER ALT CONTACT</th>
+              <th class="p-3">RECEIVER KYC</th>
+              <th class="p-3">RECEIVER TAX REFERENCE</th>
+              <th class="p-3">ALT ADDRESS FLAG</th>
+              <th class="p-3">PICKUP ADDRESS FLAG</th>
+              <th class="p-3">DROP OFF PINCODE</th>
+              <th class="p-3">DROPOFF/PICKUP OFFICE ID</th>
+              <th class="p-3">SENDER MOBILE NO</th>
+              <th class="p-3">RECEIVER MOBILE NO</th>
+              <th class="p-3">PREPAYMENT CODE</th>
+              <th class="p-3">VALUE OF PREPAYMENT</th>
+              <th class="p-3">CODR/COD</th>
+              <th class="p-3 text-right">VALUE FOR CODR/COD</th>
+              <th class="p-3">INSURANCE TYPE</th>
+              <th class="p-3">VALUE OF INSURANCE</th>
+              <th class="p-3">ACK</th>
+              <th class="p-3">REGISTRATION</th>
+              <th class="p-3">OTP BASED DELIVERY</th>
+              <th class="p-3">BULK REFERENCE</th>
+            </tr>
+          </thead>
+          <tbody id="manifestBody" class="divide-y divide-slate-100 text-slate-700 font-mono">
+            <!-- rows injected by app.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Excel generation library -->
+  <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>
+  <!-- Supabase client library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>

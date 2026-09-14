@@ -1,0 +1,59 @@
+* { box-sizing: border-box; }
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background: #f5f6fa;
+}
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.topbar-actions { display: flex; gap: 10px; }
+.entry-card, .manifest-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+.field label {
+  display: block;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.field input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.field input[readonly] { background: #f0f0f0; }
+.pincode-wrap { position: relative; display: flex; align-items: center; gap: 6px; }
+.copied-notice {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: -22px;
+  background: #333;
+  color: #fff;
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.copied-notice.show { display: block; }
+.error-text { color: #c0392b; margin-top: 10px; font-size: 13px; min-height: 18px; }
+.submit-row { margin-top: 16px; text-align: right; }
+.table-scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; white-space: nowrap; }
+th, td { border: 1px solid #ddd; padding: 6px 10px; font-size: 12px; text-align: left; }
+th { background: #fafafa; }
+
