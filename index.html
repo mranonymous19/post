@@ -39,18 +39,20 @@
 
       <!-- Action Controls -->
       <div class="flex items-center gap-3">
-        <!-- Reset Dropdown -->
-        <div class="relative inline-block text-left">
-          <select
-            id="resetSelect"
-            class="bg-white border border-slate-300 text-slate-700 text-sm font-medium rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-rose-500 focus:outline-none shadow-sm cursor-pointer hover:border-slate-400 transition"
-          >
-            <option value="" disabled selected hidden>Reset</option>
-            <option value="reset" class="text-red-600 font-semibold bg-red-50" style="color: #dc2626; background-color: #fef2f2;">
-              Reset Data (Keep Template)
-            </option>
-          </select>
-        </div>
+
+        <!-- Action Dropdown -->
+<div class="relative inline-block text-left">
+  <select
+    id="actionSelect"
+    class="bg-white border border-slate-300 text-slate-700 text-sm font-medium rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none shadow-sm cursor-pointer hover:border-slate-400 transition"
+  >
+    <option value="" disabled selected hidden>Action</option>
+    <option value="addRow">Add Row</option>
+    <option value="editRow">Edit Row</option>
+    <option value="deleteRow">Delete Row</option>
+    
+  </select>
+</div>
 
         <!-- Download Button -->
         <button
@@ -179,11 +181,12 @@
             <input
               type="number"
               step="1"
-              min="0"
+              min="14"
               id="length"
               placeholder="0"
               class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
             >
+            <p id="lengthError" class="text-xs text-rose-600 mt-1 hidden"></p>
           </div>
 
           <!-- 8. Breadth / Diameter -->
@@ -194,11 +197,12 @@
             <input
               type="number"
               step="1"
-              min="0"
+              min="9"
               id="breadth"
               placeholder="0"
               class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
             >
+            <p id="breadthError" class="text-xs text-rose-600 mt-1 hidden"></p>
           </div>
 
           <!-- 9. Height -->
@@ -209,11 +213,12 @@
             <input
               type="number"
               step="1"
-              min="0"
+              min="1"
               id="height"
               placeholder="0"
               class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
             >
+            <p id="heightError" class="text-xs text-rose-600 mt-1 hidden"></p>
           </div>
 
         </div>
@@ -233,6 +238,430 @@
         </div>
       </form>
     </div>
+   </div>
+  </div>
+
+  <!-- Delete Row Modal -->
+  <div id="deleteRowModal" class="hidden fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-lg border border-slate-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between p-4 border-b border-slate-200">
+        <h3 class="text-base font-semibold text-slate-800 flex items-center gap-2">
+          <i class="ph ph-trash text-rose-500"></i> Delete Row
+        </h3>
+        <button type="button" id="deleteRowCloseBtn" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+          <i class="ph ph-x text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <div>
+          <label for="deleteOrderId" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+            Order ID <span class="text-rose-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="deleteOrderId"
+            placeholder="E.G., 8578"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition uppercase"
+          >
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Serial Number</label>
+            <input type="text" id="deleteSerialNumber" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Barcode No</label>
+            <input type="text" id="deleteBarcode" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Physical Weight (g)</label>
+            <input type="text" id="deleteWeight" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Length (cm)</label>
+            <input type="text" id="deleteLength" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Breadth/Diameter (cm)</label>
+            <input type="text" id="deleteBreadth" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Height (cm)</label>
+            <input type="text" id="deleteHeight" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Name</label>
+            <input type="text" id="deleteReceiverName" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Add Line 1</label>
+            <input type="text" id="deleteReceiverAddLine1" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Add Line 2</label>
+            <input type="text" id="deleteReceiverAddLine2" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver City</label>
+            <input type="text" id="deleteReceiverCity" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver State</label>
+            <input type="text" id="deleteReceiverState" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Pincode</label>
+            <input type="text" id="deleteReceiverPincode" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Mobile No</label>
+            <input type="text" id="deleteReceiverMobileNo" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">CODR/COD</label>
+            <input type="text" id="deleteCodrCod" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Value For CODR/COD</label>
+            <input type="text" id="deleteValueForCodrCod" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+        </div>
+
+        <div class="flex items-center gap-3 pt-2">
+          <button type="button" id="deleteAllOpenBtn"
+            class="inline-flex items-center gap-2 shrink-0 border border-rose-300 text-rose-600 hover:bg-rose-50 font-medium text-sm px-4 py-2.5 rounded-lg transition cursor-pointer">
+            <i class="ph ph-warning text-base"></i>
+            <span>Delete All Rows</span>
+          </button>
+          <div id="deleteRowError" class="text-sm text-rose-600 min-h-[1.25rem] flex-1"></div>
+          <div class="flex items-center gap-3 shrink-0">
+            <button type="button" id="deleteRowCancelBtn"
+              class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 cursor-pointer">
+              Cancel
+            </button>
+            <button type="button" id="deleteRowConfirmBtn" disabled
+              class="inline-flex items-center gap-2 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-medium text-sm px-4 py-2.5 rounded-lg shadow-sm transition cursor-pointer">
+              <i class="ph ph-trash text-base"></i>
+              <span>Delete</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Delete All Rows Confirmation Modal -->
+  <div id="deleteAllModal" class="hidden fixed inset-0 bg-slate-900/60 z-[60] flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-lg border border-slate-200 w-full max-w-md">
+      <div class="flex items-center justify-between p-4 border-b border-slate-200">
+        <h3 class="text-base font-semibold text-slate-800 flex items-center gap-2">
+          <i class="ph ph-warning text-rose-500"></i> Delete All Rows
+        </h3>
+        <button type="button" id="deleteAllCloseBtn" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+          <i class="ph ph-x text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <p class="text-sm text-slate-600">
+          This will remove <span class="font-semibold text-rose-600">every row</span> from the Active Manifest and cannot be undone.
+        </p>
+        <div>
+          <label for="deleteAllCount" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+            How many rows (serial numbers) are in the manifest? <span class="text-rose-500">*</span>
+          </label>
+          <input
+            type="number"
+            step="1"
+            min="0"
+            id="deleteAllCount"
+            placeholder="Enter the total count"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none transition"
+          >
+        </div>
+        <div id="deleteAllError" class="text-sm text-rose-600 min-h-[1.25rem]"></div>
+        <div class="flex items-center justify-end gap-3">
+          <button type="button" id="deleteAllCancelBtn"
+            class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 cursor-pointer">
+            Cancel
+          </button>
+          <button type="button" id="deleteAllConfirmBtn"
+            class="inline-flex items-center gap-2 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-medium text-sm px-4 py-2.5 rounded-lg shadow-sm transition cursor-pointer">
+            <i class="ph ph-trash text-base"></i>
+            <span>Delete All</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+    <!-- Edit Row Modal -->
+  <div id="editRowModal" class="hidden fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-lg border border-slate-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between p-4 border-b border-slate-200">
+        <h3 class="text-base font-semibold text-slate-800 flex items-center gap-2">
+          <i class="ph ph-pencil-simple text-indigo-500"></i> Edit Row
+        </h3>
+        <button type="button" id="editRowCloseBtn" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+          <i class="ph ph-x text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <div>
+          <label for="editOrderId" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+            Order ID <span class="text-rose-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="editOrderId"
+            placeholder="E.G., 8578"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition uppercase"
+          >
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Serial Number</label>
+            <input type="number" id="editSerialNumber"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Barcode No</label>
+            <input type="text" id="editBarcode"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Physical Weight (g)</label>
+            <input type="number" step="1" min="0" id="editWeight"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Length (cm)</label>
+            <input type="number" step="1" min="14" id="editLength"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Breadth/Diameter (cm)</label>
+            <input type="number" step="1" min="9" id="editBreadth"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Height (cm)</label>
+            <input type="number" step="1" min="1" id="editHeight"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Name</label>
+            <input type="text" id="editReceiverName"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Add Line 1</label>
+            <input type="text" id="editReceiverAddLine1"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Add Line 2</label>
+            <input type="text" id="editReceiverAddLine2"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver City</label>
+            <input type="text" id="editReceiverCity"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver State</label>
+            <input type="text" id="editReceiverState"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Pincode</label>
+            <input type="text" id="editReceiverPincode"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Mobile No</label>
+            <input type="text" id="editReceiverMobileNo"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">CODR/COD</label>
+            <select id="editCodrCod"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+              <option value="">PREPAID</option>
+              <option value="COD">COD</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Value For CODR/COD</label>
+            <input type="number" step="0.01" id="editValueForCodrCod"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none disabled:bg-slate-100 disabled:cursor-not-allowed">
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between gap-3 pt-2">
+          <div id="editRowError" class="text-sm text-rose-600 min-h-[1.25rem] flex-1"></div>
+          <div class="flex items-center gap-3 shrink-0">
+            <button type="button" id="editRowCancelBtn"
+              class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 cursor-pointer">
+              Cancel
+            </button>
+            <button type="button" id="editRowSaveBtn" disabled
+              class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-medium text-sm px-4 py-2.5 rounded-lg shadow-sm transition cursor-pointer">
+              <i class="ph ph-check-circle text-base"></i>
+              <span>Update</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Add Row Modal -->
+  <div id="addRowModal" class="hidden fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-lg border border-slate-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div class="flex items-center justify-between p-4 border-b border-slate-200">
+        <h3 class="text-base font-semibold text-slate-800 flex items-center gap-2">
+          <i class="ph ph-plus-circle text-indigo-500"></i> Add Row Manually
+        </h3>
+        <button type="button" id="addRowCloseBtn" class="text-slate-400 hover:text-slate-600 cursor-pointer">
+          <i class="ph ph-x text-lg"></i>
+        </button>
+      </div>
+
+      <div class="p-5 space-y-4">
+        <div>
+          <label for="addOrderId" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
+            Order ID <span class="text-rose-500">*</span>
+          </label>
+          <input
+            type="text"
+            id="addOrderId"
+            placeholder="E.G., 8578"
+            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition uppercase"
+          >
+        </div>
+
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Serial Number</label>
+            <input type="text" id="addSerialNumber" readonly tabindex="-1"
+              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Barcode No <span class="text-rose-500">*</span></label>
+            <input type="text" id="addBarcode"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Physical Weight (g) <span class="text-rose-500">*</span></label>
+            <input type="number" step="1" min="0" id="addWeight"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Length (cm) <span class="text-rose-500">*</span></label>
+            <input type="number" step="1" min="14" id="addLength"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Breadth/Diameter (cm) <span class="text-rose-500">*</span></label>
+            <input type="number" step="1" min="9" id="addBreadth"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Height (cm) <span class="text-rose-500">*</span></label>
+            <input type="number" step="1" min="1" id="addHeight"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Name</label>
+            <input type="text" id="addReceiverName"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Add Line 1</label>
+            <input type="text" id="addReceiverAddLine1"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Add Line 2</label>
+            <input type="text" id="addReceiverAddLine2"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver City</label>
+            <input type="text" id="addReceiverCity"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver State</label>
+            <input type="text" id="addReceiverState"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Pincode</label>
+            <input type="text" id="addReceiverPincode"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Mobile No</label>
+            <input type="text" id="addReceiverMobileNo"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">CODR/COD</label>
+            <select id="addCodrCod"
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
+              <option value="">PREPAID</option>
+              <option value="COD">COD</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Value For CODR/COD</label>
+            <input type="number" step="0.01" id="addValueForCodrCod" disabled
+              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none disabled:bg-slate-100 disabled:cursor-not-allowed">
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between gap-3 pt-2">
+          <div id="addRowError" class="text-sm text-rose-600 min-h-[1.25rem] flex-1"></div>
+          <div class="flex items-center gap-3 shrink-0">
+            <button type="button" id="addRowCancelBtn"
+              class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 cursor-pointer">
+              Cancel
+            </button>
+            <button type="button" id="addRowConfirmBtn"
+              class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium text-sm px-4 py-2.5 rounded-lg shadow-sm transition cursor-pointer">
+              <i class="ph ph-plus-circle text-base"></i>
+              <span>Add</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Excel generation library -->
      
     <!-- Active Manifest Table Card -->
     <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
