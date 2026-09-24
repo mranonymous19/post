@@ -422,7 +422,6 @@ function showSaveMessage(message) {
 async function downloadExcel() {
   formError.textContent = '';
   downloadBtn.disabled = true;
-  let stage = 'excel';
   try {
     const response = await fetch(TEMPLATE_PATH);
     if (!response.ok) throw new Error(`Template fetch failed: ${response.status}`);
@@ -441,15 +440,6 @@ async function downloadExcel() {
     });
 
     const outBuffer = await workbook.xlsx.writeBuffer();
-
-    // Save to Supabase BEFORE downloading; if this fails, nothing is downloaded or reset.
-    let saveResult = null;
-    if (manifestEntries.length > 0) {
-      stage = 'supabase';
-      saveResult = await saveManifestToSupabase();
-    }
-
-    stage = 'download';
     const blob = new Blob([outBuffer], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
     });
@@ -461,22 +451,11 @@ async function downloadExcel() {
     a.click();
     a.remove();
     URL.revokeObjectURL(url);
-    resetManifest();
 
-    if (saveResult) {
-      const skipped = saveResult.total - saveResult.saved;
-      showSaveMessage(
-        skipped > 0
-          ? `Saved ${saveResult.saved} new order(s) to Supabase. ${skipped} skipped (already saved).`
-          : `Saved ${saveResult.saved} order(s) to Supabase.`
-      );
-    }
+    openResetConfirmModal();
   } catch (err) {
-    console.error(`Download failed at the "${stage}" step:`, err);
-    formError.textContent =
-      stage === 'supabase'
-        ? 'Could not save to Supabase, so nothing was downloaded and your manifest is unchanged. Check your connection and try again.'
-        : 'Failed to generate Excel file. Please try again.';
+    console.error('Excel generation failed:', err);
+    formError.textContent = 'Failed to generate Excel file. Please try again.';
   } finally {
     downloadBtn.disabled = false;
   }
@@ -484,6 +463,53 @@ async function downloadExcel() {
 
 
 downloadBtn.addEventListener('click', downloadExcel);
+
+// ---- Reset-after-download confirmation ----
+const resetConfirmModal = document.getElementById('resetConfirmModal');
+const resetConfirmYesBtn = document.getElementById('resetConfirmYesBtn');
+const resetConfirmNoBtn = document.getElementById('resetConfirmNoBtn');
+
+function openResetConfirmModal() {
+  if (manifestEntries.length === 0) {
+    localStorage.removeItem('courierManifestPendingReset');
+    return;
+  }
+  localStorage.setItem('courierManifestPendingReset', 'true');
+  resetConfirmModal.classList.remove('hidden');
+}
+
+function closeResetConfirmModal() {
+  localStorage.removeItem('courierManifestPendingReset');
+  resetConfirmModal.classList.add('hidden');
+}
+
+resetConfirmYesBtn.addEventListener('click', async () => {
+  formError.textContent = '';
+  resetConfirmYesBtn.disabled = true;
+  resetConfirmNoBtn.disabled = true;
+  try {
+    const saveResult = await saveManifestToSupabase();
+    resetManifest();
+    closeResetConfirmModal();
+    const skipped = saveResult.total - saveResult.saved;
+    showSaveMessage(
+      skipped > 0
+        ? `Saved ${saveResult.saved} new order(s) to Supabase. ${skipped} skipped (already saved).`
+        : `Saved ${saveResult.saved} order(s) to Supabase.`
+    );
+  } catch (err) {
+    console.error('Supabase save failed:', err);
+    closeResetConfirmModal();
+    formError.textContent = 'Could not save to Supabase. Your manifest was not reset — please try again.';
+  } finally {
+    resetConfirmYesBtn.disabled = false;
+    resetConfirmNoBtn.disabled = false;
+  }
+});
+
+resetConfirmNoBtn.addEventListener('click', () => {
+  closeResetConfirmModal();
+});
 
 // ---- Delete Row ----
 const actionSelect = document.getElementById('actionSelect');
@@ -965,4 +991,13 @@ document.querySelectorAll('input, select').forEach((el) => {
 });
 
 
+// Stop Chrome offering to save/fill addresses on these fields
+document.querySelectorAll('input, select').forEach((el) => {
+  el.setAttribute('autocomplete', 'off');
+});
+
 loadManifestFromStorage();
+
+if (localStorage.getItem('courierManifestPendingReset') === 'true') {
+  openResetConfirmModal();
+}
