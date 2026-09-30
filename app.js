@@ -25,6 +25,7 @@ async function testConnection() {
 let currentOrder = null; // holds the full fetched row for reuse at Submit time
 
 const orderIdInput = document.getElementById('orderId');
+const customerNameInput = document.getElementById('customerName');
 const paymentTypeInput = document.getElementById('paymentType');
 const orderPriceInput = document.getElementById('orderPrice');
 const pincodeInput = document.getElementById('pincode');
@@ -41,6 +42,7 @@ const manifestBody = document.getElementById('manifestBody');
 
 // ---- Order ID lookup ----
 function clearLookupFields() {
+  customerNameInput.value = '';  
   paymentTypeInput.value = '';
   orderPriceInput.value = '';
   pincodeInput.value = '';
@@ -80,6 +82,7 @@ async function performLookup() {
   }
 
   currentOrder = data;
+  customerNameInput.value = cleanValue(data.customer_name);   
   const invoiceUpper = (data.invoice_number || '').trim().toUpperCase();
   paymentTypeInput.value = invoiceUpper.startsWith('COD') ? 'COD' : invoiceUpper.startsWith('SHP') ? 'SHP' : '';
   orderPriceInput.value = data.amount_to_receive != null ? Number(data.amount_to_receive).toFixed(2) : '';
