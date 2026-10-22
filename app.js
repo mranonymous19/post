@@ -408,7 +408,7 @@ function toSupabaseRow(entry) {
 
 async function saveManifestToSupabase() {
   const rows = manifestEntries.map(toSupabaseRow);
-  const { data, error } = await supabaseClient.rpc('save_manifest_entries', { rows });
+  const { data, error } = await supabaseClient.rpc('save_india_post_entries', { rows });
   if (error) throw error;
   return { saved: Number(data ?? 0), total: rows.length };
 }
