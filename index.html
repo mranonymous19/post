@@ -3,775 +3,810 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Logistics & Dimension Portal</title>
+  <title>Courier Manifest · Arovehic</title>
+  <link rel="icon" type="image/png" href="data:image/png;base64,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">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Phosphor Icons -->
-  <script src="https://unpkg.com/@phosphor-icons/web"></script>
-  
-    <style>
+  <style>
+    :root {
+      --brand: #2563eb;
+      --brand-dark: #1d4ed8;
+      --ink: #0f172a;
+      --muted: #64748b;
+      --line: #e2e8f0;
+      --bg: #f4f6fb;
+    }
+    html { font-size: 14px; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      -webkit-font-smoothing: antialiased;
+      padding-bottom: 40px;
+    }
+    .mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 500; }
+    .ic { flex-shrink: 0; }
+
+    /* ---- Top bar ---- */
+    .topbar {
+      position: sticky; top: 0; z-index: 40;
+      background: rgba(255,255,255,.9);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid #e2e8f0;
+    }
+    .topbar-inner {
+      max-width: 1152px; margin: 0 auto; height: 56px; padding: 0 16px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo-tile {
+      width: 36px; height: 36px; border-radius: 12px; overflow: hidden;
+      background: #fff; border: 1px solid var(--line);
+      box-shadow: 0 2px 6px rgba(15,23,42,.08);
+    }
+    .logo-tile img { width: 100%; height: 100%; object-fit: contain; display: block; }
+    .brand-name { font-size: 15px; font-weight: 700; letter-spacing: -.01em; }
+    .brand-sub { font-size: 11.5px; font-weight: 500; color: #64748b; }
+    .date-pill {
+      background: #f1f5f9; color: #475569; border-radius: 9999px;
+      font-size: 14px; font-weight: 500; padding: 5px 12px; align-items: center;
+    }
+
+    /* ---- Page ---- */
+    .page { max-width: 1152px; margin: 0 auto; padding: 22px 16px 0; }
+    .view-in { animation: viewIn .18s ease-out both; }
+    @keyframes viewIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+    .page-head {
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+      gap: 12px; margin-bottom: 16px;
+    }
+    .page-title { font-size: 20px; font-weight: 700; letter-spacing: -.02em; margin: 0; }
+    .count-pill {
+      background: #fef3c7; color: #92400e; font-size: 12px; font-weight: 600;
+      border-radius: 9999px; padding: 2px 9px;
+    }
+
+    /* ---- Cards ---- */
+    .card {
+      background: #fff; border: 1px solid var(--line); border-radius: 14px;
+      box-shadow: 0 1px 2px rgba(15,23,42,.04), 0 6px 18px rgba(15,23,42,.04);
+    }
+    .card-body { padding: 20px 24px 22px; }
+    .card-head { padding: 16px 24px; border-bottom: 1px solid #f1f5f9; }
+    .card-title { font-size: 15px; font-weight: 700; margin: 0 0 16px; letter-spacing: -.01em; }
+    .card-title.mb-0 { margin-bottom: 0; }
+    .card-foot {
+      border-top: 1px solid #f1f5f9; background: rgba(248,250,252,.6);
+      padding: 12px 24px; border-radius: 0 0 14px 14px;
+    }
+
+    /* ---- Form fields ---- */
+    .lbl {
+      display: block; font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .07em; color: var(--muted); margin-bottom: 6px;
+    }
+    .req { color: #ef4444; }
+    .inp {
+      width: 100%; height: 40px; border-radius: 9px; border: 1px solid #cbd5e1;
+      background: #fff; color: var(--ink); font-size: 14px; font-family: inherit;
+      padding: 0 12px; outline: none;
+      transition: border-color .15s, box-shadow .15s, background-color .15s;
+    }
+    .inp::placeholder { color: #94a3b8; }
+    .inp:focus { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(37,99,235,.15); }
+    .inp.has-icon { padding-left: 36px; }
+    .inp-icon {
+      position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+      color: #94a3b8; pointer-events: none; display: flex;
+    }
+    .inp:disabled { background: #f1f5f9; color: #94a3b8; cursor: not-allowed; }
+    .inp.ro {
+      border: 1px dashed #d5dce6; background: #f8fafc; font-weight: 600; color: #334155;
+      cursor: default;
+    }
+    .inp.ro:focus { box-shadow: none; }
+    /* "filled" state: read-only box has a value (placeholder=" " is hidden) */
+    .inp.ro:not(:placeholder-shown) { border: 1px solid #e2e8f0; background: #f1f5f9; }
+    .inp.mono { font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 500; }
+    .inp.uppercase { text-transform: uppercase; }
+    .inp.uppercase::placeholder { text-transform: uppercase; }
+    .sel {
+      appearance: none; -webkit-appearance: none; cursor: pointer; padding-right: 32px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 10px center;
+    }
+    .action-select { width: auto; min-width: 120px; font-weight: 600; color: #334155; border-color: var(--line); }
+    /* ---- Action menu ---- */
+    .action-wrap { width: 230px; }
+    .btn.action-btn { width: 100%; justify-content: space-between; gap: 10px; padding: 0 12px; }
+    .action-btn .act-ic { color: var(--brand); }
+    .action-btn .chev { color: #64748b; transition: transform .15s; }
+    .action-btn[aria-expanded="true"] { border-color: var(--brand); box-shadow: 0 0 0 3px rgba(37,99,235,.15); }
+    .action-btn[aria-expanded="true"] .chev { transform: rotate(180deg); }
+    .menu {
+      position: absolute; left: 0; right: 0; top: calc(100% + 6px); z-index: 45;
+      background: #fff; border: 1px solid var(--line); border-radius: 12px; padding: 5px;
+      box-shadow: 0 12px 32px rgba(15,23,42,.14); animation: viewIn .15s ease-out both;
+    }
+    .menu.hidden { display: none; }
+    .menu-item {
+      width: 100%; display: flex; align-items: center; gap: 10px; text-align: left;
+      padding: 8px 10px; border: 0; border-radius: 9px; background: transparent;
+      font-family: inherit; color: var(--ink); cursor: pointer; transition: background-color .15s;
+    }
+    .menu-item:hover, .menu-item:focus-visible { background: #f1f5f9; outline: none; }
+    .menu-item.danger:hover, .menu-item.danger:focus-visible { background: #fef2f2; }
+    .menu-item.danger .menu-label { color: #b91c1c; }
+    .menu-ic { width: 32px; height: 32px; border-radius: 8px; display: grid; place-items: center; flex-shrink: 0; }
+    .menu-ic.blue { background: #eff6ff; color: var(--brand); }
+    .menu-ic.red { background: #fef2f2; color: #dc2626; }
+    .menu-label { display: block; font-size: 14px; font-weight: 600; }
+    .menu-hint { display: block; font-size: 12.5px; color: var(--muted); margin-top: 1px; }
+    .menu-sep { height: 1px; background: #f1f5f9; margin: 4px 6px; }
+    .field-err { font-size: 12px; color: #b91c1c; font-weight: 500; margin: 5px 0 0; }
+    .copy-btn {
+      position: absolute; right: 6px; top: 50%; transform: translateY(-50%);
+      width: 28px; height: 28px; border-radius: 7px; border: 0; background: transparent;
+      color: #94a3b8; display: grid; place-items: center; cursor: pointer;
+      transition: color .15s, background-color .15s;
+    }
+    .copy-btn:hover { color: var(--brand); background: #eff6ff; }
     #copiedNotice { display: none; }
     #copiedNotice.show { display: inline; }
+    .copied { font-size: 10.5px; font-weight: 700; color: #047857; margin-bottom: 6px; }
 
-    /* Excel-style gridlines for the Active Manifest table */
-    #manifestTable {
-      border-collapse: collapse;
+    /* ---- Buttons ---- */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+      border-radius: 9px; font-size: 14px; font-weight: 600; font-family: inherit;
+      padding: 0 16px; border: 1px solid transparent; cursor: pointer; white-space: nowrap;
+      transition: background-color .15s, box-shadow .15s, border-color .15s, color .15s;
     }
-    #manifestTable th,
-    #manifestTable td {
-      border: 1px solid #cbd5e1; /* slate-300 */
-      padding: 4px 12px;
+    .btn:active:not(:disabled) { transform: translateY(1px); }
+    .btn:disabled { cursor: not-allowed; }
+    .btn:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(37,99,235,.25); }
+    .h34 { height: 34px; } .h36 { height: 36px; } .h40 { height: 40px; }
+    .btn-primary { background: var(--brand); color: #fff; box-shadow: 0 6px 16px rgba(37,99,235,.25); }
+    .btn-primary:hover:not(:disabled) { background: var(--brand-dark); }
+    .btn-primary:disabled { background: #bfd3fb; box-shadow: none; }
+    .btn-danger { background: #dc2626; color: #fff; }
+    .btn-danger:hover:not(:disabled) { background: #b91c1c; }
+    .btn-danger:disabled { background: #f6b7b7; }
+    .btn-outline-danger { background: #fff; color: #dc2626; border-color: #fecaca; }
+    .btn-outline-danger:hover { background: #fef2f2; }
+    .btn-ghost { background: #fff; color: #334155; border-color: var(--line); }
+    .btn-ghost:hover { background: #f8fafc; }
+    .icon-btn {
+      width: 32px; height: 32px; border-radius: 8px; border: 0; background: transparent;
+      color: #94a3b8; display: grid; place-items: center; cursor: pointer;
+      transition: background-color .15s, color .15s;
     }
+    .icon-btn:hover { background: #f1f5f9; color: #334155; }
+
+    /* ---- Status pills (hidden when empty) ---- */
+    .status {
+      display: inline-flex; align-items: center; gap: 7px; width: fit-content;
+      font-size: 12.5px; font-weight: 500; border-radius: 9999px; padding: 4px 11px;
+      background: #f1f5f9; color: #475569;
+    }
+    .status::before { content: ""; width: 8px; height: 8px; border-radius: 9999px; background: currentColor; flex-shrink: 0; }
+    .status:empty { display: none; }
+    .status.err, #formError.text-rose-600 { background: #fef2f2; color: #b91c1c; }
+    .status.ok, #formError.text-emerald-600 { background: #ecfdf5; color: #047857; }
+    .status.warn { background: #fffbeb; color: #b45309; }
+
+    /* ---- Table ---- */
+    .dtable { width: 100%; border-collapse: collapse; font-size: 13.5px; white-space: nowrap; text-align: left; }
+    .dtable thead th {
+      background: #f8fafc; font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .07em; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--line);
+    }
+    .dtable th.num, .dtable td:nth-child(3), .dtable td:nth-child(5), .dtable td:nth-child(6),
+    .dtable td:nth-child(7), .dtable td:nth-child(42) { text-align: right; }
+    .dtable tbody td { padding: 11px 12px; border-top: 1px solid #f1f5f9; color: #334155; }
+    .dtable tbody tr:first-child td { border-top: 0; }
+    .dtable tbody tr { transition: background-color .15s; }
+    .dtable tbody tr:hover { background: #fafcff; }
+    .dtable td:nth-child(1) { font-weight: 700; color: var(--ink); }
+    /* barcode, sender pincode, receiver pincode, drop-off pincode, receiver mobile */
+    .dtable td:nth-child(2), .dtable td:nth-child(17), .dtable td:nth-child(28),
+    .dtable td:nth-child(35), .dtable td:nth-child(38) {
+      font-family: 'JetBrains Mono', ui-monospace, monospace; font-weight: 500; font-size: 13px;
+    }
+    .empty-state { display: none; text-align: center; padding: 36px 16px 40px; }
+    .overflow-x-auto:has(#manifestBody:empty) .empty-state { display: block; }
+    .overflow-x-auto:has(#manifestBody:empty) .dtable { display: none; }
+    .empty-tile {
+      width: 56px; height: 56px; border-radius: 16px; background: #ecfdf5; color: #10b981;
+      display: grid; place-items: center; margin: 0 auto 12px;
+    }
+    .empty-title { font-size: 15px; font-weight: 700; }
+    .empty-sub { font-size: 13.5px; color: var(--muted); margin-top: 3px; }
+
+    /* ---- Modals ---- */
+    .overlay {
+      position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
+      padding: 16px; background: rgba(15,23,42,.5);
+      backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+      animation: fadeIn .15s ease-out;
+    }
+    .overlay.hidden { display: none !important; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .modal-card {
+      width: 100%; max-height: 90vh; display: flex; flex-direction: column;
+      background: #fff; border: 1px solid var(--line); border-radius: 14px;
+      box-shadow: 0 24px 60px rgba(15,23,42,.25);
+      animation: viewIn .18s ease-out both;
+    }
+    .modal-head { display: flex; align-items: flex-start; gap: 12px; padding: 18px 20px 14px; border-bottom: 1px solid #f1f5f9; }
+    .icon-tile { width: 36px; height: 36px; border-radius: 10px; display: grid; place-items: center; flex-shrink: 0; }
+    .icon-tile.red { background: #fef2f2; color: #dc2626; }
+    .icon-tile.blue { background: #eff6ff; color: var(--brand); }
+    .modal-title { font-size: 18px; font-weight: 700; margin: 0; letter-spacing: -.01em; line-height: 1.3; }
+    .modal-sub { font-size: 13px; color: var(--muted); margin: 2px 0 0; }
+    .modal-body { padding: 18px 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; }
+    .modal-foot {
+      display: flex; align-items: center; flex-wrap: wrap; gap: 10px;
+      padding: 14px 20px; border-top: 1px solid #f1f5f9; background: rgba(248,250,252,.6);
+      border-radius: 0 0 14px 14px;
+    }
+    .foot-actions { margin-left: auto; display: flex; gap: 10px; }
+
+    /* ---- Toasts ---- */
+    .toast-stack {
+      position: fixed; top: 68px; right: 16px; z-index: 100;
+      display: flex; flex-direction: column; gap: 8px; pointer-events: none;
+    }
+    .toast {
+      display: flex; align-items: center; gap: 10px; min-width: 220px; max-width: 360px;
+      background: #0f172a; color: #fff; font-size: 13px; font-weight: 500;
+      padding: 10px 14px 10px 10px; border-radius: 12px;
+      box-shadow: 0 16px 40px rgba(15,23,42,.35);
+      animation: toastIn .22s ease-out both;
+    }
+    .toast.out { animation: toastOut .25s ease-in forwards; }
+    .toast-dot { width: 22px; height: 22px; border-radius: 9999px; display: grid; place-items: center; flex-shrink: 0; }
+    .toast-dot.ok { background: #10b981; }
+    .toast-dot.err { background: #ef4444; }
+    @keyframes toastIn { from { opacity: 0; transform: translateX(24px); } to { opacity: 1; transform: none; } }
+    @keyframes toastOut { to { opacity: 0; transform: translateX(24px); } }
+
+    @media (max-width: 640px) {
+      .card-body, .card-head, .card-foot { padding-left: 16px; padding-right: 16px; }
+    }
+
   </style>
 </head>
-<body class="bg-slate-50 text-slate-800 min-h-screen p-4 md:p-8 font-sans antialiased">
+<body>
 
-  <div class="max-w-7xl mx-auto space-y-6">
-
-    <!-- Top Header -->
-    <header class="flex flex-col md:flex-row md:items-center md:justify-between pb-4 border-b border-slate-200 gap-4">
-      <div>
-        <h1 class="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-          <i class="ph ph-package text-indigo-600"></i> Dispatch & Dimensions Portal
-        </h1>
-        <p class="text-sm text-slate-500">Record package metrics, view order details, and export manifest data.</p>
-      </div>
-
-      <!-- Action Controls -->
+  <!-- Top bar -->
+  <header class="topbar">
+    <div class="topbar-inner">
       <div class="flex items-center gap-3">
-
-        <!-- Action Dropdown -->
-<div class="relative inline-block text-left">
-  <select
-    id="actionSelect"
-    class="bg-white border border-slate-300 text-slate-700 text-sm font-medium rounded-lg px-3 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none shadow-sm cursor-pointer hover:border-slate-400 transition"
-  >
-    <option value="" disabled selected hidden>Action</option>
-    <option value="addRow">Add Row</option>
-    <option value="editRow">Edit Row</option>
-    <option value="deleteRow">Delete Row</option>
-    
-  </select>
-</div>
-
-        <!-- Download Button -->
-        <button
-          id="downloadBtn"
-          type="button"
-          class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 active:bg-emerald-800 text-white font-medium text-sm px-4 py-2.5 rounded-lg shadow-sm transition cursor-pointer"
-        >
-          <i class="ph ph-file-csv text-base"></i>
-          <span>Download Excel</span>
-        </button>
+        <div class="logo-tile"><img src="data:image/png;base64,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" alt="Arovehic logo" width="36" height="36"></div>
+        <div class="leading-tight">
+          <div class="brand-name">Arovehic</div>
+          <div class="brand-sub">India Post · Dispatch Desk</div>
+        </div>
       </div>
-    </header>
+      <span id="todayPill" class="date-pill hidden sm:inline-flex"></span>
+    </div>
+  </header>
+
+  <main class="page view-in">
+
+    <!-- Page header -->
+    <div class="page-head">
+      <div class="flex items-center gap-2.5">
+        <h1 class="page-title">Courier manifest</h1>
+        <span id="rowCountPill" class="count-pill">0 rows</span>
+      </div>
+      <div class="flex items-center gap-2.5">
+        <!-- Action menu: styled dropdown; it sets the hidden #actionSelect, which app.js already listens to -->
+        <div class="relative action-wrap">
+          <select id="actionSelect" class="sr-only" tabindex="-1" aria-hidden="true">
+            <option value="" disabled selected hidden>Action</option>
+            <option value="addRow">Add Row</option>
+            <option value="editRow">Edit Row</option>
+            <option value="deleteRow">Delete Row</option>
+          </select>
+          <button type="button" id="actionMenuBtn" class="btn btn-ghost h36 action-btn" aria-haspopup="menu" aria-expanded="false">
+            <span class="flex items-center gap-2"><svg class="ic act-ic" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg><span>Action</span></span><svg class="ic chev" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+          <div id="actionMenu" class="menu hidden" role="menu">
+            <button type="button" class="menu-item" role="menuitem" data-action="addRow">
+              <span class="menu-ic blue"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span>
+              <span><span class="menu-label">Add</span><span class="menu-hint">Manual entry, no lookup</span></span>
+            </button>
+            <button type="button" class="menu-item" role="menuitem" data-action="editRow">
+              <span class="menu-ic blue"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></span>
+              <span><span class="menu-label">Edit</span><span class="menu-hint">Change a row by Order ID</span></span>
+            </button>
+            <div class="menu-sep"></div>
+            <button type="button" class="menu-item danger" role="menuitem" data-action="deleteRow">
+              <span class="menu-ic red"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></span>
+              <span><span class="menu-label">Delete</span><span class="menu-hint">Remove one or all rows</span></span>
+            </button>
+          </div>
+        </div>
+        <button id="downloadBtn" type="button" class="btn btn-primary h36"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg><span>Download Excel</span></button>
+      </div>
+    </div>
 
     <!-- New Order Entry Card -->
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
-      <h2 class="text-lg font-semibold text-slate-800 mb-4 flex items-center gap-2">
-        <i class="ph ph-plus-circle text-indigo-500"></i> New Order Entry
-      </h2>
-
-      <form id="orderForm" class="space-y-4" onsubmit="return false;">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <section class="card">
+      <form id="orderForm" class="card-body" onsubmit="return false;">
+        <h2 class="card-title">New order entry</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-4">
 
           <!-- 1. Order ID -->
           <div>
-            <label for="orderId" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-              Order ID  <span class="text-rose-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="orderId"
-              placeholder="E.G., 8578"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition uppercase"
-            >
+            <label for="orderId" class="lbl">Order ID <span class="req">*</span></label>
+            <div class="relative">
+              <span class="inp-icon"><svg class="ic " width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+              <input type="text" id="orderId" placeholder="E.G., 8578" class="inp has-icon uppercase">
+            </div>
           </div>
 
-                    <!-- 1b. Customer Name -->
           <div>
-            <label for="customerName" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-              Customer Name
-            </label>
-            <input
-              type="text"
-              id="customerName"
-              readonly
-              tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed uppercase"
-            >
+            <label for="customerName" class="lbl">Customer Name</label>
+            <input id="customerName" readonly tabindex="-1" placeholder=" " type="text" class="inp ro uppercase">
           </div>
 
-          <!-- 2. Payment Type -->
           <div>
-            <label for="paymentType" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-              Payment Type
-            </label>
-            <input
-              type="text"
-              id="paymentType"
-             
-              readonly
-              tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed uppercase"
-            >
+            <label for="paymentType" class="lbl">Payment Type</label>
+            <input id="paymentType" readonly tabindex="-1" placeholder=" " type="text" class="inp ro uppercase">
           </div>
 
-          <!-- 3. Order Price -->
           <div>
-            <label for="orderPrice" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-              Order Price
-            </label>
-            <input
-              type="text"
-              id="orderPrice"
-              
-              readonly
-              tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed"
-            >
+            <label for="orderPrice" class="lbl">Order Price</label>
+            <input id="orderPrice" readonly tabindex="-1" placeholder=" " type="text" class="inp ro">
           </div>
 
           <!-- 4. Pincode -->
           <div>
-            <div class="flex items-center justify-between mb-1">
-              <label for="pincode" class="block text-xs font-semibold uppercase tracking-wider text-slate-600">
-                Pincode
-              </label>
-              <span id="copiedNotice" class="text-[10px] text-emerald-600 font-bold transition">Copied!</span>
+            <div class="flex items-center justify-between">
+              <label for="pincode" class="lbl">Pincode</label>
+              <span id="copiedNotice" class="copied">Copied!</span>
             </div>
             <div class="relative">
-              <input
-                type="text"
-                id="pincode"
-                
-                readonly
-                class="w-full pl-3 pr-8 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none"
-              >
-              <button
-                type="button"
-                id="copyPincodeBtn"
-                title="Copy Pincode"
-                class="absolute right-2.5 top-2.5 text-slate-400 hover:text-indigo-600 focus:outline-none cursor-pointer"
-              >
-                <i class="ph ph-copy text-base"></i>
-              </button>
+              <input type="text" id="pincode" readonly placeholder=" " class="inp ro mono pr-9">
+              <button type="button" id="copyPincodeBtn" title="Copy Pincode" class="copy-btn"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button>
             </div>
           </div>
 
-          <!-- 5. Barcode No -->
           <div>
-            <label for="barcode" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-              Barcode No <span class="text-rose-500">*</span>
-            </label>
-            <input
-              type="text"
-              id="barcode"
-              placeholder="Scan or enter barcode"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-            >
+            <label for="barcode" class="lbl">Barcode No <span class="req">*</span></label>
+            <input id="barcode" type="text" placeholder="Scan or enter barcode" class="inp mono">
           </div>
 
-          <!-- 6. Physical Weight -->
           <div>
-            <label for="weight" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-              Physical Weight (g) <span class="text-rose-500">*</span>
-            </label>
-            <input
-              type="number"
-              step="1"
-              min="0"
-              id="weight"
-              placeholder="0"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-            >
+            <label for="weight" class="lbl">Physical Weight (g) <span class="req">*</span></label>
+            <input id="weight" type="number" step="1" min="0" placeholder="0" class="inp">
           </div>
 
-          <!-- 7. Length -->
           <div>
-            <label for="length" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-              Length (cm) <span class="text-rose-500">*</span>
-            </label>
-            <input
-              type="number"
-              step="1"
-              min="14"
-              id="length"
-              placeholder="0"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-            >
-            <p id="lengthError" class="text-xs text-rose-600 mt-1 hidden"></p>
+            <label for="length" class="lbl">Length (cm) <span class="req">*</span></label>
+            <input id="length" type="number" step="1" min="14" placeholder="0" class="inp">
+            <p id="lengthError" class="field-err hidden"></p>
           </div>
 
-          <!-- 8. Breadth / Diameter -->
           <div>
-            <label for="breadth" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-              Breadth / Diameter (cm) <span class="text-rose-500">*</span>
-            </label>
-            <input
-              type="number"
-              step="1"
-              min="9"
-              id="breadth"
-              placeholder="0"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-            >
-            <p id="breadthError" class="text-xs text-rose-600 mt-1 hidden"></p>
+            <label for="breadth" class="lbl">Breadth / Diameter (cm) <span class="req">*</span></label>
+            <input id="breadth" type="number" step="1" min="9" placeholder="0" class="inp">
+            <p id="breadthError" class="field-err hidden"></p>
           </div>
 
-          <!-- 9. Height -->
           <div>
-            <label for="height" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-              Height (cm) <span class="text-rose-500">*</span>
-            </label>
-            <input
-              type="number"
-              step="1"
-              min="1"
-              id="height"
-              placeholder="0"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
-            >
-            <p id="heightError" class="text-xs text-rose-600 mt-1 hidden"></p>
+            <label for="height" class="lbl">Height (cm) <span class="req">*</span></label>
+            <input id="height" type="number" step="1" min="1" placeholder="0" class="inp">
+            <p id="heightError" class="field-err hidden"></p>
+          </div>
+
+          <!-- Submit Button (same row as Height) -->
+          <div class="lg:col-span-2 flex justify-end">
+            <div>
+              <span class="lbl invisible" aria-hidden="true">&nbsp;</span>
+              <button type="button" id="submitBtn" class="btn btn-primary h40 px-6"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Submit Entry</span></button>
+            </div>
           </div>
 
         </div>
 
-        <div id="formError" class="text-sm text-rose-600 min-h-[1.25rem]"></div>
-
-        <!-- Submit Button -->
-        <div class="pt-3 flex justify-end">
-          <button
-            type="button"
-            id="submitBtn"
-            class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium text-sm px-6 py-2.5 rounded-lg shadow-sm transition cursor-pointer"
-          >
-            <i class="ph ph-check-circle text-base"></i>
-            <span>Submit Entry</span>
-          </button>
-        </div>
+        <div id="formError" class="status text-rose-600 mt-4"></div>
       </form>
-    </div>
-   </div>
-  </div>
+    </section>
 
-  <!-- Delete Row Modal -->
-  <div id="deleteRowModal" class="hidden fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl shadow-lg border border-slate-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-      <div class="flex items-center justify-between p-4 border-b border-slate-200">
-        <h3 class="text-base font-semibold text-slate-800 flex items-center gap-2">
-          <i class="ph ph-trash text-rose-500"></i> Delete Row
-        </h3>
-        <button type="button" id="deleteRowCloseBtn" class="text-slate-400 hover:text-slate-600 cursor-pointer">
-          <i class="ph ph-x text-lg"></i>
-        </button>
-      </div>
-
-      <div class="p-5 space-y-4">
-        <div>
-          <label for="deleteOrderId" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-            Order ID <span class="text-rose-500">*</span>
-          </label>
-          <input
-            type="text"
-            id="deleteOrderId"
-            placeholder="E.G., 8578"
-            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition uppercase"
-          >
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Serial Number</label>
-            <input type="text" id="deleteSerialNumber" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Barcode No</label>
-            <input type="text" id="deleteBarcode" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Physical Weight (g)</label>
-            <input type="text" id="deleteWeight" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Length (cm)</label>
-            <input type="text" id="deleteLength" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Breadth/Diameter (cm)</label>
-            <input type="text" id="deleteBreadth" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Height (cm)</label>
-            <input type="text" id="deleteHeight" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Name</label>
-            <input type="text" id="deleteReceiverName" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Add Line 1</label>
-            <input type="text" id="deleteReceiverAddLine1" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Add Line 2</label>
-            <input type="text" id="deleteReceiverAddLine2" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver City</label>
-            <input type="text" id="deleteReceiverCity" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver State</label>
-            <input type="text" id="deleteReceiverState" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Pincode</label>
-            <input type="text" id="deleteReceiverPincode" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Mobile No</label>
-            <input type="text" id="deleteReceiverMobileNo" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">CODR/COD</label>
-            <input type="text" id="deleteCodrCod" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Value For CODR/COD</label>
-            <input type="text" id="deleteValueForCodrCod" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-        </div>
-
-        <div class="flex items-center gap-3 pt-2">
-          <button type="button" id="deleteAllOpenBtn"
-            class="inline-flex items-center gap-2 shrink-0 border border-rose-300 text-rose-600 hover:bg-rose-50 font-medium text-sm px-4 py-2.5 rounded-lg transition cursor-pointer">
-            <i class="ph ph-warning text-base"></i>
-            <span>Delete All Rows</span>
-          </button>
-          <div id="deleteRowError" class="text-sm text-rose-600 min-h-[1.25rem] flex-1"></div>
-          <div class="flex items-center gap-3 shrink-0">
-            <button type="button" id="deleteRowCancelBtn"
-              class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 cursor-pointer">
-              Cancel
-            </button>
-            <button type="button" id="deleteRowConfirmBtn" disabled
-              class="inline-flex items-center gap-2 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-medium text-sm px-4 py-2.5 rounded-lg shadow-sm transition cursor-pointer">
-              <i class="ph ph-trash text-base"></i>
-              <span>Delete</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Delete All Rows Confirmation Modal -->
-  <div id="deleteAllModal" class="hidden fixed inset-0 bg-slate-900/60 z-[60] flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl shadow-lg border border-slate-200 w-full max-w-md">
-      <div class="flex items-center justify-between p-4 border-b border-slate-200">
-        <h3 class="text-base font-semibold text-slate-800 flex items-center gap-2">
-          <i class="ph ph-warning text-rose-500"></i> Delete All Rows
-        </h3>
-        <button type="button" id="deleteAllCloseBtn" class="text-slate-400 hover:text-slate-600 cursor-pointer">
-          <i class="ph ph-x text-lg"></i>
-        </button>
-      </div>
-
-      <div class="p-5 space-y-4">
-        <p class="text-sm text-slate-600">
-          This will remove <span class="font-semibold text-rose-600">every row</span> from the Active Manifest and cannot be undone.
-        </p>
-        <div>
-          <label for="deleteAllCount" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-            How many rows (serial numbers) are in the manifest? <span class="text-rose-500">*</span>
-          </label>
-          <input
-            type="number"
-            step="1"
-            min="0"
-            id="deleteAllCount"
-            placeholder="Enter the total count"
-            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-rose-500 focus:border-rose-500 outline-none transition"
-          >
-        </div>
-        <div id="deleteAllError" class="text-sm text-rose-600 min-h-[1.25rem]"></div>
-        <div class="flex items-center justify-end gap-3">
-          <button type="button" id="deleteAllCancelBtn"
-            class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 cursor-pointer">
-            Cancel
-          </button>
-          <button type="button" id="deleteAllConfirmBtn"
-            class="inline-flex items-center gap-2 bg-rose-600 hover:bg-rose-700 active:bg-rose-800 text-white font-medium text-sm px-4 py-2.5 rounded-lg shadow-sm transition cursor-pointer">
-            <i class="ph ph-trash text-base"></i>
-            <span>Delete All</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-  <!-- Reset After Download Confirmation Modal -->
-  <div id="resetConfirmModal" class="hidden fixed inset-0 bg-slate-900/60 z-[60] flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl shadow-lg border border-slate-200 w-full max-w-md">
-      <div class="flex items-center justify-between p-4 border-b border-slate-200">
-        <h3 class="text-base font-semibold text-slate-800 flex items-center gap-2">
-          <i class="ph ph-question text-indigo-500"></i> Reset Manifest?
-        </h3>
-      </div>
-      <div class="p-5 space-y-4">
-        <p class="text-sm text-slate-600">
-          The file has downloaded. Do you want to clear the Active Manifest now?
-        </p>
-        <div class="flex items-center justify-end gap-3">
-          <button type="button" id="resetConfirmNoBtn"
-            class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 cursor-pointer">
-            No, keep rows
-          </button>
-          <button type="button" id="resetConfirmYesBtn"
-            class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium text-sm px-4 py-2.5 rounded-lg shadow-sm transition cursor-pointer">
-            <i class="ph ph-check-circle text-base"></i>
-            <span>Yes, reset</span>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <!-- Edit Row Modal -->
-  <div id="editRowModal" class="hidden fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl shadow-lg border border-slate-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-      <div class="flex items-center justify-between p-4 border-b border-slate-200">
-        <h3 class="text-base font-semibold text-slate-800 flex items-center gap-2">
-          <i class="ph ph-pencil-simple text-indigo-500"></i> Edit Row
-        </h3>
-        <button type="button" id="editRowCloseBtn" class="text-slate-400 hover:text-slate-600 cursor-pointer">
-          <i class="ph ph-x text-lg"></i>
-        </button>
-      </div>
-
-      <div class="p-5 space-y-4">
-        <div>
-          <label for="editOrderId" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-            Order ID <span class="text-rose-500">*</span>
-          </label>
-          <input
-            type="text"
-            id="editOrderId"
-            placeholder="E.G., 8578"
-            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition uppercase"
-          >
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Serial Number</label>
-            <input type="number" id="editSerialNumber"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Barcode No</label>
-            <input type="text" id="editBarcode"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Physical Weight (g)</label>
-            <input type="number" step="1" min="0" id="editWeight"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Length (cm)</label>
-            <input type="number" step="1" min="14" id="editLength"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Breadth/Diameter (cm)</label>
-            <input type="number" step="1" min="9" id="editBreadth"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Height (cm)</label>
-            <input type="number" step="1" min="1" id="editHeight"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Name</label>
-            <input type="text" id="editReceiverName"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Add Line 1</label>
-            <input type="text" id="editReceiverAddLine1"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Add Line 2</label>
-            <input type="text" id="editReceiverAddLine2"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver City</label>
-            <input type="text" id="editReceiverCity"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver State</label>
-            <input type="text" id="editReceiverState"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Pincode</label>
-            <input type="text" id="editReceiverPincode"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Mobile No</label>
-            <input type="text" id="editReceiverMobileNo"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">CODR/COD</label>
-            <select id="editCodrCod"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-              <option value="">PREPAID</option>
-              <option value="COD">COD</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Value For CODR/COD</label>
-            <input type="number" step="0.01" id="editValueForCodrCod"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none disabled:bg-slate-100 disabled:cursor-not-allowed">
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between gap-3 pt-2">
-          <div id="editRowError" class="text-sm text-rose-600 min-h-[1.25rem] flex-1"></div>
-          <div class="flex items-center gap-3 shrink-0">
-            <button type="button" id="editRowCancelBtn"
-              class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 cursor-pointer">
-              Cancel
-            </button>
-            <button type="button" id="editRowSaveBtn" disabled
-              class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-medium text-sm px-4 py-2.5 rounded-lg shadow-sm transition cursor-pointer">
-              <i class="ph ph-check-circle text-base"></i>
-              <span>Update</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <!-- Add Row Modal -->
-  <div id="addRowModal" class="hidden fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
-    <div class="bg-white rounded-xl shadow-lg border border-slate-200 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-      <div class="flex items-center justify-between p-4 border-b border-slate-200">
-        <h3 class="text-base font-semibold text-slate-800 flex items-center gap-2">
-          <i class="ph ph-plus-circle text-indigo-500"></i> Add Row Manually
-        </h3>
-        <button type="button" id="addRowCloseBtn" class="text-slate-400 hover:text-slate-600 cursor-pointer">
-          <i class="ph ph-x text-lg"></i>
-        </button>
-      </div>
-
-      <div class="p-5 space-y-4">
-        <div>
-          <label for="addOrderId" class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">
-            Order ID <span class="text-rose-500">*</span>
-          </label>
-          <input
-            type="text"
-            id="addOrderId"
-            placeholder="E.G., 8578"
-            class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition uppercase"
-          >
-        </div>
-
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Serial Number</label>
-            <input type="text" id="addSerialNumber" readonly tabindex="-1"
-              class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm font-semibold text-slate-700 outline-none cursor-not-allowed">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Barcode No <span class="text-rose-500">*</span></label>
-            <input type="text" id="addBarcode"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Physical Weight (g) <span class="text-rose-500">*</span></label>
-            <input type="number" step="1" min="0" id="addWeight"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Length (cm) <span class="text-rose-500">*</span></label>
-            <input type="number" step="1" min="14" id="addLength"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Breadth/Diameter (cm) <span class="text-rose-500">*</span></label>
-            <input type="number" step="1" min="9" id="addBreadth"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Height (cm) <span class="text-rose-500">*</span></label>
-            <input type="number" step="1" min="1" id="addHeight"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Name</label>
-            <input type="text" id="addReceiverName"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Add Line 1</label>
-            <input type="text" id="addReceiverAddLine1"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Add Line 2</label>
-            <input type="text" id="addReceiverAddLine2"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver City</label>
-            <input type="text" id="addReceiverCity"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver State</label>
-            <input type="text" id="addReceiverState"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Pincode</label>
-            <input type="text" id="addReceiverPincode"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Receiver Mobile No</label>
-            <input type="text" id="addReceiverMobileNo"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">CODR/COD</label>
-            <select id="addCodrCod"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none">
-              <option value="">PREPAID</option>
-              <option value="COD">COD</option>
-            </select>
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Value For CODR/COD</label>
-            <input type="number" step="0.01" id="addValueForCodrCod" disabled
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none disabled:bg-slate-100 disabled:cursor-not-allowed">
-          </div>
-        </div>
-
-        <div class="flex items-center justify-between gap-3 pt-2">
-          <div id="addRowError" class="text-sm text-rose-600 min-h-[1.25rem] flex-1"></div>
-          <div class="flex items-center gap-3 shrink-0">
-            <button type="button" id="addRowCancelBtn"
-              class="px-4 py-2 text-sm font-medium text-slate-600 hover:text-slate-800 cursor-pointer">
-              Cancel
-            </button>
-            <button type="button" id="addRowConfirmBtn"
-              class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 active:bg-indigo-800 text-white font-medium text-sm px-4 py-2.5 rounded-lg shadow-sm transition cursor-pointer">
-              <i class="ph ph-plus-circle text-base"></i>
-              <span>Add</span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Excel generation library -->
-     
     <!-- Active Manifest Table Card -->
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
-      <div class="p-4 border-b border-slate-100 flex items-center justify-between">
-        <h3 class="font-semibold text-slate-800 text-sm">Active Manifest Sheet</h3>
+    <section class="card mt-4">
+      <div class="card-head">
+        <h2 class="card-title mb-0">Active manifest sheet</h2>
       </div>
-
       <div class="overflow-x-auto">
-        <table id="manifestTable" class="w-full text-left border-collapse text-xs whitespace-nowrap">
+        <table id="manifestTable" class="dtable">
           <thead>
-            <tr class="bg-slate-50 text-slate-600 font-semibold uppercase tracking-wider border-b border-slate-200">
-              <th class="p-3">SERIAL NUMBER</th>
-              <th class="p-3">BARCODE NO</th>
-              <th class="p-3 text-right">PHYSICAL WEIGHT</th>
-              <th class="p-3">SHAPE OF ARTICLE</th>
-              <th class="p-3 text-right">LENGTH</th>
-              <th class="p-3 text-right">BREADTH/DIAMETER</th>
-              <th class="p-3 text-right">HEIGHT</th>
-              <th class="p-3">PRIORITY FLAG</th>
-              <th class="p-3">DELIVERY INSTRUCTION</th>
-              <th class="p-3">INSTRUCTION RTS</th>
-              <th class="p-3">SENDER NAME</th>
-              <th class="p-3">SENDER COMPANY</th>
-              <th class="p-3">SENDER ADD LINE 1</th>
-              <th class="p-3">SENDER ADD LINE 2</th>
-              <th class="p-3">SENDER CITY</th>
-              <th class="p-3">SENDER STATE</th>
-              <th class="p-3">SENDER PINCODE</th>
-              <th class="p-3">SENDER EMAILID</th>
-              <th class="p-3">SENDER ALT CONTACT</th>
-              <th class="p-3">SENDER KYC</th>
-              <th class="p-3">SENDER TAX REFERENCE</th>
-              <th class="p-3">RECEIVER NAME</th>
-              <th class="p-3">RECEIVER COMPANY</th>
-              <th class="p-3">RECEIVER ADD LINE 1</th>
-              <th class="p-3">RECEIVER ADD LINE 2</th>
-              <th class="p-3">RECEIVER CITY</th>
-              <th class="p-3">RECEIVER STATE</th>
-              <th class="p-3">RECEIVER PINCODE</th>
-              <th class="p-3">RECEIVER EMAILID</th>
-              <th class="p-3">RECEIVER ALT CONTACT</th>
-              <th class="p-3">RECEIVER KYC</th>
-              <th class="p-3">RECEIVER TAX REFERENCE</th>
-              <th class="p-3">ALT ADDRESS FLAG</th>
-              <th class="p-3">PICKUP ADDRESS FLAG</th>
-              <th class="p-3">DROP OFF PINCODE</th>
-              <th class="p-3">DROPOFF/PICKUP OFFICE ID</th>
-              <th class="p-3">SENDER MOBILE NO</th>
-              <th class="p-3">RECEIVER MOBILE NO</th>
-              <th class="p-3">PREPAYMENT CODE</th>
-              <th class="p-3">VALUE OF PREPAYMENT</th>
-              <th class="p-3">CODR/COD</th>
-              <th class="p-3 text-right">VALUE FOR CODR/COD</th>
-              <th class="p-3">INSURANCE TYPE</th>
-              <th class="p-3">VALUE OF INSURANCE</th>
-              <th class="p-3">ACK</th>
-              <th class="p-3">REGISTRATION</th>
-              <th class="p-3">OTP BASED DELIVERY</th>
-              <th class="p-3">BULK REFERENCE</th>
+            <tr>
+              <th>SERIAL NUMBER</th>
+              <th>BARCODE NO</th>
+              <th class="num">PHYSICAL WEIGHT</th>
+              <th>SHAPE OF ARTICLE</th>
+              <th class="num">LENGTH</th>
+              <th class="num">BREADTH/DIAMETER</th>
+              <th class="num">HEIGHT</th>
+              <th>PRIORITY FLAG</th>
+              <th>DELIVERY INSTRUCTION</th>
+              <th>INSTRUCTION RTS</th>
+              <th>SENDER NAME</th>
+              <th>SENDER COMPANY</th>
+              <th>SENDER ADD LINE 1</th>
+              <th>SENDER ADD LINE 2</th>
+              <th>SENDER CITY</th>
+              <th>SENDER STATE</th>
+              <th>SENDER PINCODE</th>
+              <th>SENDER EMAILID</th>
+              <th>SENDER ALT CONTACT</th>
+              <th>SENDER KYC</th>
+              <th>SENDER TAX REFERENCE</th>
+              <th>RECEIVER NAME</th>
+              <th>RECEIVER COMPANY</th>
+              <th>RECEIVER ADD LINE 1</th>
+              <th>RECEIVER ADD LINE 2</th>
+              <th>RECEIVER CITY</th>
+              <th>RECEIVER STATE</th>
+              <th>RECEIVER PINCODE</th>
+              <th>RECEIVER EMAILID</th>
+              <th>RECEIVER ALT CONTACT</th>
+              <th>RECEIVER KYC</th>
+              <th>RECEIVER TAX REFERENCE</th>
+              <th>ALT ADDRESS FLAG</th>
+              <th>PICKUP ADDRESS FLAG</th>
+              <th>DROP OFF PINCODE</th>
+              <th>DROPOFF/PICKUP OFFICE ID</th>
+              <th>SENDER MOBILE NO</th>
+              <th>RECEIVER MOBILE NO</th>
+              <th>PREPAYMENT CODE</th>
+              <th>VALUE OF PREPAYMENT</th>
+              <th>CODR/COD</th>
+              <th class="num">VALUE FOR CODR/COD</th>
+              <th>INSURANCE TYPE</th>
+              <th>VALUE OF INSURANCE</th>
+              <th>ACK</th>
+              <th>REGISTRATION</th>
+              <th>OTP BASED DELIVERY</th>
+              <th>BULK REFERENCE</th>
             </tr>
           </thead>
-          <tbody id="manifestBody" class="divide-y divide-slate-100 text-slate-700 font-mono">
-            <!-- rows injected by app.js -->
-          </tbody>
+          <!-- rows injected by app.js (tbody must stay empty so the "All caught up" state shows) -->
+          <tbody id="manifestBody"></tbody>
         </table>
+        <div class="empty-state">
+          <div class="empty-tile"><svg class="ic " width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></div>
+          <div class="empty-title">All caught up</div>
+          <div class="empty-sub">No rows in the manifest. Submit an entry to add one.</div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <span id="rowCountFooter" class="text-[14px] text-slate-500">Showing 0 rows</span>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Delete Row Modal -->
+  <div id="deleteRowModal" class="hidden overlay" style="z-index:50">
+    <div class="modal-card" style="max-width:768px" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div class="icon-tile red"><svg class="ic " width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></div>
+        <div class="flex-1 min-w-0">
+          <h3 class="modal-title">Delete Row</h3>
+          <p class="modal-sub">Find a row by Order ID and remove it from the manifest.</p>
+        </div>
+        <button type="button" id="deleteRowCloseBtn" class="icon-btn" title="Close"><svg class="ic " width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <div class="max-w-xs">
+          <label for="deleteOrderId" class="lbl">Order ID <span class="req">*</span></label>
+          <div class="relative">
+            <span class="inp-icon"><svg class="ic " width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+            <input type="text" id="deleteOrderId" placeholder="E.G., 8578" class="inp has-icon uppercase">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-3.5">
+          <div class="">
+            <label class="lbl">Serial Number</label>
+            <input type="text" id="deleteSerialNumber" readonly tabindex="-1" placeholder=" " class="inp ro">
+          </div>
+          <div class="">
+            <label class="lbl">Barcode No</label>
+            <input type="text" id="deleteBarcode" readonly tabindex="-1" placeholder=" " class="inp ro mono">
+          </div>
+          <div class="">
+            <label class="lbl">Physical Weight (g)</label>
+            <input type="text" id="deleteWeight" readonly tabindex="-1" placeholder=" " class="inp ro">
+          </div>
+          <div class="">
+            <label class="lbl">Length (cm)</label>
+            <input type="text" id="deleteLength" readonly tabindex="-1" placeholder=" " class="inp ro">
+          </div>
+          <div class="">
+            <label class="lbl">Breadth/Diameter (cm)</label>
+            <input type="text" id="deleteBreadth" readonly tabindex="-1" placeholder=" " class="inp ro">
+          </div>
+          <div class="">
+            <label class="lbl">Height (cm)</label>
+            <input type="text" id="deleteHeight" readonly tabindex="-1" placeholder=" " class="inp ro">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver Name</label>
+            <input type="text" id="deleteReceiverName" readonly tabindex="-1" placeholder=" " class="inp ro">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="lbl">Receiver Add Line 1</label>
+            <input type="text" id="deleteReceiverAddLine1" readonly tabindex="-1" placeholder=" " class="inp ro">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="lbl">Receiver Add Line 2</label>
+            <input type="text" id="deleteReceiverAddLine2" readonly tabindex="-1" placeholder=" " class="inp ro">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver City</label>
+            <input type="text" id="deleteReceiverCity" readonly tabindex="-1" placeholder=" " class="inp ro">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver State</label>
+            <input type="text" id="deleteReceiverState" readonly tabindex="-1" placeholder=" " class="inp ro">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver Pincode</label>
+            <input type="text" id="deleteReceiverPincode" readonly tabindex="-1" placeholder=" " class="inp ro mono">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver Mobile No</label>
+            <input type="text" id="deleteReceiverMobileNo" readonly tabindex="-1" placeholder=" " class="inp ro mono">
+          </div>
+          <div class="">
+            <label class="lbl">CODR/COD</label>
+            <input type="text" id="deleteCodrCod" readonly tabindex="-1" placeholder=" " class="inp ro">
+          </div>
+          <div class="">
+            <label class="lbl">Value For CODR/COD</label>
+            <input type="text" id="deleteValueForCodrCod" readonly tabindex="-1" placeholder=" " class="inp ro">
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <button type="button" id="deleteAllOpenBtn" class="btn btn-outline-danger h40"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4M12 17h.01"/></svg><span>Delete All Rows</span></button>
+        <div id="deleteRowError" class="status err"></div>
+        <div class="foot-actions">
+          <button type="button" id="deleteRowCancelBtn" class="btn btn-ghost h40">Cancel</button>
+          <button type="button" id="deleteRowConfirmBtn" disabled class="btn btn-danger h40"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg><span>Delete</span></button>
+        </div>
       </div>
     </div>
-
   </div>
+
+  <!-- Delete All Rows Modal -->
+  <div id="deleteAllModal" class="hidden overlay" style="z-index:60">
+    <div class="modal-card" style="max-width:448px" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div class="icon-tile red"><svg class="ic " width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg></div>
+        <div class="flex-1 min-w-0">
+          <h3 class="modal-title">Delete All Rows</h3>
+          <p class="modal-sub">Type the row count to confirm.</p>
+        </div>
+        <button type="button" id="deleteAllCloseBtn" class="icon-btn" title="Close"><svg class="ic " width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <p class="text-[14px] text-slate-600">
+          This will remove <span class="font-semibold text-red-600">every row</span> from the Active Manifest and cannot be undone.
+        </p>
+        <div>
+          <label for="deleteAllCount" class="lbl">How many rows (serial numbers) are in the manifest? <span class="req">*</span></label>
+          <input type="number" step="1" min="0" id="deleteAllCount" placeholder="Enter the total count" class="inp">
+        </div>
+      </div>
+      <div class="modal-foot">
+        <div id="deleteAllError" class="status err"></div>
+        <div class="foot-actions">
+          <button type="button" id="deleteAllCancelBtn" class="btn btn-ghost h40">Cancel</button>
+          <button type="button" id="deleteAllConfirmBtn" class="btn btn-danger h40"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg><span>Delete All</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Row Modal -->
+  <div id="editRowModal" class="hidden overlay" style="z-index:50">
+    <div class="modal-card" style="max-width:768px" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div class="icon-tile blue"><svg class="ic " width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg></div>
+        <div class="flex-1 min-w-0">
+          <h3 class="modal-title">Edit Row</h3>
+          <p class="modal-sub">Find a row by Order ID and update its details.</p>
+        </div>
+        <button type="button" id="editRowCloseBtn" class="icon-btn" title="Close"><svg class="ic " width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <div class="max-w-xs">
+          <label for="editOrderId" class="lbl">Order ID <span class="req">*</span></label>
+          <div class="relative">
+            <span class="inp-icon"><svg class="ic " width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></span>
+            <input type="text" id="editOrderId" placeholder="E.G., 8578" class="inp has-icon uppercase">
+          </div>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-3.5">
+          <div class="">
+            <label class="lbl">Serial Number</label>
+            <input type="number" id="editSerialNumber" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Barcode No</label>
+            <input type="text" id="editBarcode" class="inp mono">
+          </div>
+          <div class="">
+            <label class="lbl">Physical Weight (g)</label>
+            <input type="number" step="1" min="0" id="editWeight" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Length (cm)</label>
+            <input type="number" step="1" min="14" id="editLength" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Breadth/Diameter (cm)</label>
+            <input type="number" step="1" min="9" id="editBreadth" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Height (cm)</label>
+            <input type="number" step="1" min="1" id="editHeight" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver Name</label>
+            <input type="text" id="editReceiverName" class="inp">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="lbl">Receiver Add Line 1</label>
+            <input type="text" id="editReceiverAddLine1" class="inp">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="lbl">Receiver Add Line 2</label>
+            <input type="text" id="editReceiverAddLine2" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver City</label>
+            <input type="text" id="editReceiverCity" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver State</label>
+            <input type="text" id="editReceiverState" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver Pincode</label>
+            <input type="text" id="editReceiverPincode" class="inp mono">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver Mobile No</label>
+            <input type="text" id="editReceiverMobileNo" class="inp mono">
+          </div>
+          <div class="">
+            <label class="lbl">CODR/COD</label>
+            <select id="editCodrCod" class="inp sel">
+              <option value="">PREPAID</option>
+              <option value="COD">COD</option>
+            </select>
+          </div>
+          <div class="">
+            <label class="lbl">Value For CODR/COD</label>
+            <input type="number" step="0.01" id="editValueForCodrCod" class="inp">
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <div id="editRowError" class="status err"></div>
+        <div class="foot-actions">
+          <button type="button" id="editRowCancelBtn" class="btn btn-ghost h40">Cancel</button>
+          <button type="button" id="editRowSaveBtn" disabled class="btn btn-primary h40"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Update</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Row Manually Modal -->
+  <div id="addRowModal" class="hidden overlay" style="z-index:50">
+    <div class="modal-card" style="max-width:768px" role="dialog" aria-modal="true">
+      <div class="modal-head">
+        <div class="icon-tile blue"><svg class="ic " width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></div>
+        <div class="flex-1 min-w-0">
+          <h3 class="modal-title">Add Row Manually</h3>
+          <p class="modal-sub">Add a row without a Supabase lookup.</p>
+        </div>
+        <button type="button" id="addRowCloseBtn" class="icon-btn" title="Close"><svg class="ic " width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      </div>
+      <div class="modal-body">
+        <div class="max-w-xs">
+          <label for="addOrderId" class="lbl">Order ID <span class="req">*</span></label>
+          <input type="text" id="addOrderId" placeholder="E.G., 8578" class="inp uppercase">
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-x-4 gap-y-3.5">
+          <div class="">
+            <label class="lbl">Serial Number</label>
+            <input type="text" id="addSerialNumber" readonly tabindex="-1" placeholder=" " class="inp ro">
+          </div>
+          <div class="">
+            <label class="lbl">Barcode No <span class="req">*</span></label>
+            <input type="text" id="addBarcode" class="inp mono">
+          </div>
+          <div class="">
+            <label class="lbl">Physical Weight (g) <span class="req">*</span></label>
+            <input type="number" step="1" min="0" id="addWeight" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Length (cm) <span class="req">*</span></label>
+            <input type="number" step="1" min="14" id="addLength" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Breadth/Diameter (cm) <span class="req">*</span></label>
+            <input type="number" step="1" min="9" id="addBreadth" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Height (cm) <span class="req">*</span></label>
+            <input type="number" step="1" min="1" id="addHeight" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver Name</label>
+            <input type="text" id="addReceiverName" class="inp">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="lbl">Receiver Add Line 1</label>
+            <input type="text" id="addReceiverAddLine1" class="inp">
+          </div>
+          <div class="sm:col-span-2">
+            <label class="lbl">Receiver Add Line 2</label>
+            <input type="text" id="addReceiverAddLine2" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver City</label>
+            <input type="text" id="addReceiverCity" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver State</label>
+            <input type="text" id="addReceiverState" class="inp">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver Pincode</label>
+            <input type="text" id="addReceiverPincode" class="inp mono">
+          </div>
+          <div class="">
+            <label class="lbl">Receiver Mobile No</label>
+            <input type="text" id="addReceiverMobileNo" class="inp mono">
+          </div>
+          <div class="">
+            <label class="lbl">CODR/COD</label>
+            <select id="addCodrCod" class="inp sel">
+              <option value="">PREPAID</option>
+              <option value="COD">COD</option>
+            </select>
+          </div>
+          <div class="">
+            <label class="lbl">Value For CODR/COD</label>
+            <input type="number" step="0.01" id="addValueForCodrCod" disabled class="inp">
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot">
+        <div id="addRowError" class="status err"></div>
+        <div class="foot-actions">
+          <button type="button" id="addRowCancelBtn" class="btn btn-ghost h40">Cancel</button>
+          <button type="button" id="addRowConfirmBtn" class="btn btn-primary h40"><svg class="ic " width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Add</span></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toasts -->
+  <div id="toastStack" class="toast-stack" aria-live="polite"></div>
 
   <!-- Excel generation library -->
   <script src="https://cdn.jsdelivr.net/npm/exceljs@4.4.0/dist/exceljs.min.js"></script>

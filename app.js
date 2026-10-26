@@ -362,6 +362,7 @@ submitBtn.addEventListener('click', () => {
   serialCounter++;
   saveManifestToStorage();
   clearManualFields();
+  showToast(`Row ${row.serialNumber} added`);
 });
 
 function resetManifest() {
@@ -455,7 +456,7 @@ async function downloadExcel() {
     a.remove();
     URL.revokeObjectURL(url);
 
-    openResetConfirmModal();
+    await saveAndClearAfterDownload();
   } catch (err) {
     console.error('Excel generation failed:', err);
     formError.textContent = 'Failed to generate Excel file. Please try again.';
@@ -467,52 +468,26 @@ async function downloadExcel() {
 
 downloadBtn.addEventListener('click', downloadExcel);
 
-// ---- Reset-after-download confirmation ----
-const resetConfirmModal = document.getElementById('resetConfirmModal');
-const resetConfirmYesBtn = document.getElementById('resetConfirmYesBtn');
-const resetConfirmNoBtn = document.getElementById('resetConfirmNoBtn');
+// ---- Auto-save to Supabase + clear after download ----
+async function saveAndClearAfterDownload() {
+  if (manifestEntries.length === 0) return; // nothing to save or clear
 
-function openResetConfirmModal() {
-  if (manifestEntries.length === 0) {
-    localStorage.removeItem('courierManifestPendingReset');
-    return;
-  }
-  localStorage.setItem('courierManifestPendingReset', 'true');
-  resetConfirmModal.classList.remove('hidden');
-}
-
-function closeResetConfirmModal() {
-  localStorage.removeItem('courierManifestPendingReset');
-  resetConfirmModal.classList.add('hidden');
-}
-
-resetConfirmYesBtn.addEventListener('click', async () => {
-  formError.textContent = '';
-  resetConfirmYesBtn.disabled = true;
-  resetConfirmNoBtn.disabled = true;
   try {
     const saveResult = await saveManifestToSupabase();
     resetManifest();
-    closeResetConfirmModal();
     const skipped = saveResult.total - saveResult.saved;
     showSaveMessage(
       skipped > 0
-        ? `Saved ${saveResult.saved} new order(s) to Supabase. ${skipped} skipped (already saved).`
-        : `Saved ${saveResult.saved} order(s) to Supabase.`
+        ? `Saved ${saveResult.saved} new order(s) to Supabase. ${skipped} skipped (already saved). Active Manifest cleared.`
+        : `Saved ${saveResult.saved} order(s) to Supabase. Active Manifest cleared.`
     );
+    showToast(`Saved ${saveResult.saved} order(s) to Supabase`);
   } catch (err) {
     console.error('Supabase save failed:', err);
-    closeResetConfirmModal();
-    formError.textContent = 'Could not save to Supabase. Your manifest was not reset — please try again.';
-  } finally {
-    resetConfirmYesBtn.disabled = false;
-    resetConfirmNoBtn.disabled = false;
+    formError.textContent = 'File downloaded, but saving to Supabase failed. Rows were NOT cleared — click Download Excel again to retry.';
+    showToast('Saving to Supabase failed', 'error');
   }
-});
-
-resetConfirmNoBtn.addEventListener('click', () => {
-  closeResetConfirmModal();
-});
+}
 
 // ---- Delete Row ----
 const actionSelect = document.getElementById('actionSelect');
@@ -626,6 +601,7 @@ deleteRowConfirmBtn.addEventListener('click', () => {
   rerenderManifestTable();
   saveManifestToStorage();
   closeDeleteModal();
+  showToast('Row deleted');
 });
 
 // ---- Delete All Rows (with count verification) ----
@@ -669,6 +645,7 @@ function confirmDeleteAll() {
   resetManifest();
   closeDeleteAllModal();
   closeDeleteModal();
+  showToast('All rows deleted');
 }
 
 deleteAllOpenBtn.addEventListener('click', openDeleteAllModal);
@@ -811,6 +788,7 @@ function saveEditedRow() {
   rerenderManifestTable();
   saveManifestToStorage();
   closeEditModal();
+  showToast(`Row ${matchedEditEntry.serialNumber} updated`);
 }
 
 editOrderIdInput.addEventListener('keydown', (e) => {
@@ -960,6 +938,7 @@ function saveAddedRow() {
   serialCounter++;
   saveManifestToStorage();
   closeAddModal();
+  showToast(`Row ${row.serialNumber} added`);
 }
 
 addOrderIdInput.addEventListener('keydown', (e) => {
@@ -999,8 +978,163 @@ document.querySelectorAll('input, select').forEach((el) => {
   el.setAttribute('autocomplete', 'off');
 });
 
+// ---- UI helpers: toasts, today's date, row count, popup closing ----
+function showToast(message, type = 'ok') {
+  const stack = document.getElementById('toastStack');
+  if (!stack) return;
+  const icon = type === 'ok'
+    ? '<path d="M20 6 9 17l-5-5"/>'
+    : '<path d="M18 6 6 18M6 6l12 12"/>';
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML =
+    `<span class="toast-dot ${type === 'ok' ? 'ok' : 'err'}">` +
+    `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">${icon}</svg>` +
+    `</span><span></span>`;
+  toast.lastChild.textContent = message;
+  stack.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('out');
+    setTimeout(() => toast.remove(), 260);
+  }, 2600);
+}
+
+(function setTodayPill() {
+  const pill = document.getElementById('todayPill');
+  if (!pill) return;
+  pill.textContent = new Date().toLocaleDateString('en-IN', {
+    weekday: 'short', day: 'numeric', month: 'short', year: 'numeric',
+  });
+})();
+
+function updateRowCount() {
+  const n = manifestBody.children.length;
+  const label = `${n} ${n === 1 ? 'row' : 'rows'}`;
+  const pill = document.getElementById('rowCountPill');
+  const footer = document.getElementById('rowCountFooter');
+  if (pill) pill.textContent = label;
+  if (footer) footer.textContent = `Showing ${label}`;
+}
+new MutationObserver(updateRowCount).observe(manifestBody, { childList: true });
+
+// Close popups with Esc or a click on the dark background (top-most popup first)
+const POPUPS = [
+  [deleteAllModal, closeDeleteAllModal],
+  [deleteRowModal, closeDeleteModal],
+  [editRowModal, closeEditModal],
+  [addRowModal, closeAddModal],
+];
+POPUPS.forEach(([modalEl, closeFn]) => {
+  modalEl.addEventListener('mousedown', (e) => {
+    if (e.target === modalEl) closeFn();
+  });
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  const open = POPUPS.find(([modalEl]) => !modalEl.classList.contains('hidden'));
+  if (open) {
+    e.preventDefault();
+    open[1]();
+  }
+});
+
+// ---- Action menu (styled dropdown that drives the hidden #actionSelect) ----
+const actionMenuBtn = document.getElementById('actionMenuBtn');
+const actionMenu = document.getElementById('actionMenu');
+const actionMenuItems = Array.from(actionMenu.querySelectorAll('[data-action]'));
+
+function openActionMenu() {
+  actionMenu.classList.remove('hidden');
+  actionMenuBtn.setAttribute('aria-expanded', 'true');
+  actionMenuItems[0].focus();
+}
+
+function closeActionMenu() {
+  actionMenu.classList.add('hidden');
+  actionMenuBtn.setAttribute('aria-expanded', 'false');
+}
+
+actionMenuBtn.addEventListener('click', () => {
+  if (actionMenu.classList.contains('hidden')) openActionMenu();
+  else closeActionMenu();
+});
+
+actionMenuItems.forEach((item, i) => {
+  item.addEventListener('click', () => {
+    closeActionMenu();
+    // Same path as before: set the select's value and fire its change handler
+    actionSelect.value = item.dataset.action;
+    actionSelect.dispatchEvent(new Event('change'));
+  });
+  item.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      const step = e.key === 'ArrowDown' ? 1 : -1;
+      actionMenuItems[(i + step + actionMenuItems.length) % actionMenuItems.length].focus();
+    } else if (e.key === 'Escape') {
+      e.stopPropagation();
+      closeActionMenu();
+      actionMenuBtn.focus();
+    }
+  });
+});
+
+document.addEventListener('mousedown', (e) => {
+  if (!actionMenu.contains(e.target) && !actionMenuBtn.contains(e.target)) closeActionMenu();
+});
+
+// ---- Left/Right arrow keys move between entry fields ----
+const ARROW_NAV_FIELDS = [orderIdInput, barcodeInput, weightInput, lengthInput, breadthInput, heightInput, submitBtn];
+
+function caretAtEdge(el, direction) {
+  // Number inputs and buttons have no caret position, so always allow the jump
+  let start;
+  let end;
+  try {
+    start = el.selectionStart;
+    end = el.selectionEnd;
+  } catch (e) {
+    return true;
+  }
+  if (start === null || start === undefined) return true;
+  if (start !== end) return false; // text is selected: let the arrow act normally
+  return direction === 'right' ? end === el.value.length : start === 0;
+}
+
+function placeCaret(el, direction) {
+  // Arriving with Right -> caret at end; arriving with Left -> caret at start
+  try {
+    const pos = direction === 'right' ? el.value.length : 0;
+    el.setSelectionRange(pos, pos);
+  } catch (e) {
+    // number inputs and buttons don't support this; ignore
+  }
+}
+
+ARROW_NAV_FIELDS.forEach((el, i) => {
+  el.addEventListener('keydown', (e) => {
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    if (e.shiftKey || e.ctrlKey || e.altKey || e.metaKey) return;
+
+    const direction = e.key === 'ArrowRight' ? 'right' : 'left';
+    if (!caretAtEdge(el, direction)) return;
+
+    const next = ARROW_NAV_FIELDS[i + (direction === 'right' ? 1 : -1)];
+    if (!next) return;
+
+    e.preventDefault();
+
+    // Leaving Order ID with Right: run the lookup if it hasn't been done yet
+    if (el === orderIdInput && direction === 'right' && !currentOrder && orderIdInput.value.trim()) {
+      performLookup();
+    }
+
+    next.focus();
+    placeCaret(next, direction);
+  });
+});
+
 loadManifestFromStorage();
 
-if (localStorage.getItem('courierManifestPendingReset') === 'true') {
-  openResetConfirmModal();
-}
+// Remove leftover flag from the old reset popup (no longer used)
+localStorage.removeItem('courierManifestPendingReset');
