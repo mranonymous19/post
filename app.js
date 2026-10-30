@@ -575,6 +575,8 @@ actionSelect.addEventListener('change', () => {
     openDeleteModal();
   } else if (actionSelect.value === 'editRow') {
     openEditModal();
+  } else if (actionSelect.value === 'supabaseEdit') {
+    openSupaEditModal();
   }
   actionSelect.value = ''; // always return dropdown to placeholder
 });
@@ -978,6 +980,121 @@ document.querySelectorAll('input, select').forEach((el) => {
   el.setAttribute('autocomplete', 'off');
 });
 
+// ---- Supabase Edit: change the barcode ("Transaction ID") of a saved india_post row ----
+// Uses 2 Supabase functions (run supabase_edit_barcode.sql once):
+//   get_india_post_barcode(p_order_id)                 -> current barcode
+//   update_india_post_barcode(p_order_id, p_new_barcode) -> rows updated
+const supaEditModal = document.getElementById('supaEditModal');
+const supaOrderIdInput = document.getElementById('supaOrderId');
+const supaCurrentBarcodeInput = document.getElementById('supaCurrentBarcode');
+const supaNewBarcodeInput = document.getElementById('supaNewBarcode');
+const supaEditError = document.getElementById('supaEditError');
+const supaEditSaveBtn = document.getElementById('supaEditSaveBtn');
+
+let supaMatchedOrderId = null;
+
+function resetSupaEditFields() {
+  supaCurrentBarcodeInput.value = '';
+  supaNewBarcodeInput.value = '';
+  supaNewBarcodeInput.disabled = true;
+  supaEditSaveBtn.disabled = true;
+  supaEditError.textContent = '';
+  supaMatchedOrderId = null;
+}
+
+function openSupaEditModal() {
+  supaOrderIdInput.value = '';
+  resetSupaEditFields();
+  supaEditModal.classList.remove('hidden');
+  supaOrderIdInput.focus();
+}
+
+function closeSupaEditModal() {
+  supaEditModal.classList.add('hidden');
+}
+
+async function performSupaLookup() {
+  const raw = supaOrderIdInput.value.trim();
+  resetSupaEditFields();
+  if (!raw) {
+    supaEditError.textContent = 'Please enter an Order ID.';
+    return;
+  }
+
+  const { data, error } = await supabaseClient.rpc('get_india_post_barcode', { p_order_id: raw });
+  if (error) {
+    console.error('Supabase Edit lookup error:', error);
+    supaEditError.textContent = `Lookup failed: ${error.message || 'check your connection and try again.'}`;
+    return;
+  }
+
+  const row = Array.isArray(data) ? data[0] : data;
+  if (!row) {
+    supaEditError.textContent = 'Order ID not found in Supabase (india_post).';
+    return;
+  }
+
+  supaMatchedOrderId = row.order_id;
+  supaCurrentBarcodeInput.value = row.transaction_id || '';
+  supaNewBarcodeInput.disabled = false;
+  supaEditSaveBtn.disabled = false;
+  supaNewBarcodeInput.focus();
+}
+
+async function saveSupaBarcode() {
+  if (!supaMatchedOrderId) return;
+  supaEditError.textContent = '';
+
+  const newBarcode = supaNewBarcodeInput.value.trim();
+  if (!newBarcode) {
+    supaEditError.textContent = 'New Barcode is required.';
+    return;
+  }
+  if (newBarcode === supaCurrentBarcodeInput.value.trim()) {
+    supaEditError.textContent = 'New Barcode is the same as the current one.';
+    return;
+  }
+
+  supaEditSaveBtn.disabled = true;
+  const { data, error } = await supabaseClient.rpc('update_india_post_barcode', {
+    p_order_id: supaMatchedOrderId,
+    p_new_barcode: newBarcode,
+  });
+  supaEditSaveBtn.disabled = false;
+
+  if (error) {
+    console.error('Supabase Edit save error:', error);
+    supaEditError.textContent = error.message || 'Could not save to Supabase. Please try again.';
+    return;
+  }
+  if (!Number(data)) {
+    supaEditError.textContent = 'Nothing was updated — the order was not found.';
+    return;
+  }
+
+  closeSupaEditModal();
+  showToast(`Barcode updated in Supabase for ${supaMatchedOrderId}`);
+}
+
+supaOrderIdInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    performSupaLookup();
+  }
+});
+supaOrderIdInput.addEventListener('input', () => {
+  if (supaMatchedOrderId) resetSupaEditFields(); // Order ID changed: clear stale result
+});
+supaNewBarcodeInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    e.preventDefault();
+    saveSupaBarcode();
+  }
+});
+document.getElementById('supaEditCloseBtn').addEventListener('click', closeSupaEditModal);
+document.getElementById('supaEditCancelBtn').addEventListener('click', closeSupaEditModal);
+supaEditSaveBtn.addEventListener('click', saveSupaBarcode);
+
 // ---- UI helpers: toasts, today's date, row count, popup closing ----
 function showToast(message, type = 'ok') {
   const stack = document.getElementById('toastStack');
@@ -1023,6 +1140,7 @@ const POPUPS = [
   [deleteRowModal, closeDeleteModal],
   [editRowModal, closeEditModal],
   [addRowModal, closeAddModal],
+  [supaEditModal, closeSupaEditModal],
 ];
 POPUPS.forEach(([modalEl, closeFn]) => {
   modalEl.addEventListener('mousedown', (e) => {
