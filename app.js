@@ -484,7 +484,7 @@ async function saveAndClearAfterDownload() {
     showToast(`Saved ${saveResult.saved} order(s) to Supabase`);
   } catch (err) {
     console.error('Supabase save failed:', err);
-    formError.textContent = 'File downloaded, but saving to Supabase failed. Rows were NOT cleared — click Download Excel again to retry.';
+    formError.textContent = `File downloaded, but saving to Supabase failed: ${err.message || err}. Rows were NOT cleared — fix this, then click Download Excel again.`;
     showToast('Saving to Supabase failed', 'error');
   }
 }
